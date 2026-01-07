@@ -10,6 +10,14 @@ namespace MyApp.Domain.Specifications
             return new BaseSpecification<Product>(x => x.Id == id);
         }
 
+        public static BaseSpecification<Product> GetProductsWithPage(int pageNumber, int pageSize)
+        {
+            var spec = new BaseSpecification<Product>(x => true);
+            spec.ApplyPaging((pageNumber - 1) * pageSize, pageSize);
+            spec.ApplyAsNoTracking();
+            return spec;
+        }
 
+        
     }
 }

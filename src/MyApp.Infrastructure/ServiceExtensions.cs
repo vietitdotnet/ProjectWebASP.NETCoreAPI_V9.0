@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyApp.Application;
 using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Identity;
 using MyApp.Application.Interfaces.Jwt;
@@ -24,9 +25,18 @@ namespace MyApp.Infrastructure
                 options.UseSqlServer("name=ConnectionStrings:SQLServerAppDatabase",
                 x => x.MigrationsAssembly("MyApp.Infrastructure")));
 
-            services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-           
+
+            services.AddScoped(
+                typeof(IBaseRepositoryAsync<>),
+                typeof(BaseRepositoryAsync<>)
+            );
+
+            services.AddAutoMapper(
+                typeof(ApplicationAssemblyMarker).Assembly
+              
+            );
+
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;

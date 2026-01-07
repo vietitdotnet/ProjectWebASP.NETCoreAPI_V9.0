@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using MyApp.Domain.Core.Models;
 
 namespace MyApp.Application.Models.DTOs.Products
 {
-    public class ProductDetailDto
+    public class ProductDetailDto : BaseDto
     {
+
     }
 }

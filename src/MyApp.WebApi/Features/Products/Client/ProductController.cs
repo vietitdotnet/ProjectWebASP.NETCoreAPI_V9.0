@@ -1,9 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces;
 using MyApp.Application.Models.Requests.Products;
 using MyApp.Application.Models.Responses.Products;
+using MyApp.Domain.Parameters;
 
 
 namespace MyApp.WebApi.Features.Products.Client
@@ -31,6 +30,16 @@ namespace MyApp.WebApi.Features.Products.Client
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<GetProductRes> GetProductById(int id)
             => await _productService.GetProductByIdAsync(id);
+
+
+        [HttpGet("{slug}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<GetProductsWithPagedRes> GetProductsBySlugCategory([FromRoute] string slug, [FromQuery] ProductParameters praram)
+        {           
+           praram.Normalize();
+
+           return await _productService.GetProductsBySlugCategoryAsync(slug, praram);
+        }
 
 
         [HttpPost]

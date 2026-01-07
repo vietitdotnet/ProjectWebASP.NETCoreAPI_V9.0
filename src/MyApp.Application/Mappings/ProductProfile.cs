@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using MyApp.Application.Models.DTOs.Products;
+﻿using MyApp.Application.Models.DTOs.Products;
 using MyApp.Application.Models.Requests.Products;
 using MyApp.Domain.Entities;
 

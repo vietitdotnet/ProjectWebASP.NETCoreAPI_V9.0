@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Entities;
+﻿using MyApp.Domain.Core.Models;
+using MyApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyApp.Application.Models.DTOs.Products
 {
-    public class ProductDto 
+    public class ProductDto : BaseDto
     {
         public int Id { get; set; }
 

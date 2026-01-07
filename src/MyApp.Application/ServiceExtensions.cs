@@ -9,7 +9,7 @@ namespace MyApp.Application
         public static void ConfigureApplication(this IServiceCollection services)
         {
             services.AddScoped<IProductService, ProductService>();
-
+            services.AddScoped<ICategoryService, CategoryService>();
         }
     }
 }

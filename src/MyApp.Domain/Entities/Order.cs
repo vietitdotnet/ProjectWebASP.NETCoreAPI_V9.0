@@ -20,7 +20,6 @@ namespace MyApp.Domain.Entities
 
         public string CreatedByUserId { get; set; }
 
-
         // Navigation property trừu tượng
         public virtual IAppUserReference User { get; set; }
 

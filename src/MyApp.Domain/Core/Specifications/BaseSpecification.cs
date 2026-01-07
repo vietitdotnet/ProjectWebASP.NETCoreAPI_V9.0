@@ -7,7 +7,18 @@ namespace MyApp.Domain.Core.Specifications
     /// </summary>
     public class BaseSpecification<T> : ISpecification<T>
     {
-        public Expression<Func<T, bool>> Criteria { get; private set; }
+
+        protected BaseSpecification()
+        { 
+            Criteria = x => true;
+        }
+
+        public BaseSpecification(Expression<Func<T, bool>> criteria)
+        {
+            Criteria = criteria ?? (x => true);
+        }
+
+        public Expression<Func<T, bool>> Criteria { get; protected set; }
         public List<Expression<Func<T, object>>> Includes { get; } = new();
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -18,12 +29,6 @@ namespace MyApp.Domain.Core.Specifications
         public bool IsPagingEnabled { get; private set; } = false;
         public bool AsNoTracking { get; private set; } = true;
 
-        public BaseSpecification() { }
-
-        public BaseSpecification(Expression<Func<T, bool>> criteria)
-        {
-            Criteria = criteria;
-        }
 
         #region Include
         public void AddInclude(Expression<Func<T, object>> includeExpression)

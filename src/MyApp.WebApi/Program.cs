@@ -1,5 +1,5 @@
-﻿
-using MyApp.Application;
+﻿using MyApp.Application;
+using MyApp.Domain;
 using MyApp.Infrastructure;
 using MyApp.Infrastructure.Extentions;
 using MyApp.WebApi.Exceptions.Extentions;
@@ -12,7 +12,6 @@ builder.Services.ConfigureInfrastructure();
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(ApplicationAssemblyMarker).Assembly);
 
 builder.Services.ConfigureApplication();
 

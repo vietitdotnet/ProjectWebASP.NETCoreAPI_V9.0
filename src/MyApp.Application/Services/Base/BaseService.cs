@@ -15,6 +15,7 @@ namespace MyApp.Application.Services.Base
             _unitOfWork = unitOfWork;
             _logger = loggerService;
             _mapper = mapper;
+            
         }
     }
 }

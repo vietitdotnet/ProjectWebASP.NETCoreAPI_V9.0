@@ -1,10 +1,7 @@
 ﻿using MyApp.Application.Models.Requests.Products;
 using MyApp.Application.Models.Responses.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MyApp.Domain.Parameters;
+
 
 namespace MyApp.Application.Interfaces
 {
@@ -16,5 +13,7 @@ namespace MyApp.Application.Interfaces
         Task<DeleteProductRes> DeleteProductAsync(int id);
 
         Task<UpdateProductRes> UpdateProductAsync(int id, UpdateProductRep req);
+
+        Task<GetProductsWithPagedRes> GetProductsBySlugCategoryAsync(string categorySlug, ProductParameters productParameters);
     }
 }

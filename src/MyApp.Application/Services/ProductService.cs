@@ -5,23 +5,27 @@ using MyApp.Application.Models.DTOs.Products;
 using MyApp.Application.Models.Requests.Products;
 using MyApp.Application.Models.Responses.Products;
 using MyApp.Application.Services.Base;
+using MyApp.Application.Specifications.Products;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Exceptions;
-using MyApp.Domain.Exceptions.APIRoutes;
-using MyApp.Domain.Exceptions.CodeErrors;
+using MyApp.Domain.Parameters;
 using MyApp.Domain.Specifications;
+
 
 namespace MyApp.Application.Services
 {
     public class ProductService : BaseService, IProductService
     {
+        private readonly ICategoryService _categoryService;
         public ProductService(IUnitOfWork unitOfWork, 
             ILoggerService loggerService, 
-            IMapper mapper) 
+            IMapper mapper,
+            ICategoryService categoryService
+             ) 
             : base(unitOfWork, loggerService, mapper)
         {
-
+           _categoryService = categoryService;
         }
 
         public async Task<CreateProductRes> CreateProductAsync(CreateProductRep req)
@@ -58,6 +62,7 @@ namespace MyApp.Application.Services
             var result = await _unitOfWork.Repository<Product>().ListAllAsync();
 
             _logger.LogInfo("Danh sách product");
+
             return new GetProductsRes()
             {
                 Data = _mapper.Map<IList<ProductDto>>(result)
@@ -83,12 +88,11 @@ namespace MyApp.Application.Services
         {
             var spec = ProductSpecifications.GetProdcutByIdSpec(id);
 
+
             var result = await _unitOfWork.Repository<Product>().FirstOrDefaultAsync(spec);
 
-
             if (result == null)
-                throw new RedirectRequestException("Chưa Xác thực Email" , RedirectRequest.ConfirmedEmail, RedirectCodes.EmailNotConfirmed);
-
+                throw new NotFoundException();
 
             _mapper.Map(req, result);
 
@@ -97,6 +101,25 @@ namespace MyApp.Application.Services
             await _unitOfWork.SaveChangesAsync();
 
             return new UpdateProductRes() { Data = new ProductDto(result) };
+
+        }
+
+        public async Task<GetProductsWithPagedRes> GetProductsBySlugCategoryAsync(string categorySlug, ProductParameters param)
+        {
+
+            var categoryId = await _categoryService.GetCategoryIdBySlugAsync(categorySlug);
+        
+            var spec = new ProdcutsByIdCategoryWithPageSpec(categoryId, param);
+
+            var items = await _unitOfWork
+                .Repository<Product>()
+                .GetPagedDataAsync<ProductDto, ProductParameters>(spec, param);
+
+            return new GetProductsWithPagedRes
+            {
+                Data = items
+            };
+           
 
         }
     }
